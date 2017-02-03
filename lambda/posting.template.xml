@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+xmlns:inline="http://www.google.com/schemas/atom-inline/1.0">
+<id>https://theguardian.com/feed</id>
+<title>{{feedTitle}}</title>
+<author><name>{{publisher}}</name></author>
+<updated>{{now8601Zulu}}</updated>
+<entry>
+  <id>{{entryAMPUrl}}</id>
+  <updated>{{lastUpdatedDateIn8601Zulu}}</updated>
+  <title>{{entryTitle}}</title>
+  <link rel="alternate" type="text/html" href="{{entryLiveUrl}}" />
+  <link rel="amphtml" href="{{entryAMPUrl}}" >
+    <inline:inline type="text/html">
+      <![CDATA[
+          {{pagedata}}
+      ]]>
+    </inline:inline>
+  </link>
+</entry>
+</feed>
