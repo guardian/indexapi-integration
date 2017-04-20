@@ -52,6 +52,8 @@ class CapiFirehoseService @Inject()(playconfig: play.Configuration, consumerLogi
     consumerLogic
   )
 
+  println("Starting Kinesis Client")
+
   client.start()
 
 }

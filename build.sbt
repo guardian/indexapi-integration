@@ -16,3 +16,4 @@ libraryDependencies ++= Seq(
   "com.gu" %% "content-api-firehose-client" % "0.7"
 )
 
+libraryDependencies += "org.mockito" % "mockito-core" % "2.7.19"

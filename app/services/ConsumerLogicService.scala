@@ -22,13 +22,16 @@ class ConsumerLogicService @Inject() (playconfig: play.Configuration, ws: WSClie
       println("  pub: ", content.webPublicationDate.get.dateTime.toString)
       println("  created: ", content.fields.get.firstPublicationDate.get.dateTime.toString)
 
-      ws.url(playconfig.getString("lambdaEndpoint")).post(Json.obj(
-        "title" -> content.webTitle,
-        "url" -> content.webUrl,
-        "amp" -> content.webUrl.replaceFirst("www", "amp"),
-        "updated" -> content.fields.get.lastModified.get.dateTime,
-        "created" -> content.fields.get.firstPublicationDate.get.dateTime
-      ))
+      implicit val context = play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+      postUpdate(
+        content.webTitle,
+        content.webUrl,
+        content.fields.get.lastModified.get.dateTime,
+        content.fields.get.firstPublicationDate.get.dateTime
+      ).map { response =>
+        println(response.body)
+      }
 
     }
 
@@ -41,6 +44,19 @@ class ConsumerLogicService @Inject() (playconfig: play.Configuration, ws: WSClie
       case _ => handleOther(content)
     }
 
+  }
+
+  def postUpdate(title: String, url: String, updated: Long, created: Long) = {
+
+    println("Posting update to url: " + playconfig.getString("lambdaEndpoint"))
+
+    ws.url(playconfig.getString("lambdaEndpoint")).post(Json.obj(
+      "title" -> title,
+      "url" -> url,
+      "amp" -> url.replaceFirst("www", "amp"),
+      "updated" -> updated,
+      "created" -> created
+    ))
   }
 
   override def contentTakedown(contentId: String): Unit = {

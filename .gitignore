@@ -8,3 +8,4 @@ target
 /RUNNING_PID
 /lambda/keyfile.json
 /conf/production.conf
+.DS_Store

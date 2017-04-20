@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Google Indexing API
+Resources:
+
+  IndexerRootRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ec2.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+
+  CrierPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: CrierDynamo
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:*
+          Resource:
+          - arn:aws:dynamodb:*:642631414762:table/content-api-firehose-v2-PROD_google-indexing-live-PROD*
+        - Effect: Allow
+          Action:
+          - kinesis:Get*
+          - kinesis:List*
+          - kinesis:Describe*
+          Resource:
+          - arn:aws:kinesis:*:308506855511:stream/content-api-firehose-v2-PROD
+      Roles:
+      - !Ref IndexerRootRole
+
+  InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+      - !Ref IndexerRootRole
+
