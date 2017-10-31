@@ -3,7 +3,7 @@ package services
 import javax.inject.Inject
 
 import com.gu.contentapi.client.model.v1.Content
-import com.gu.contentapi.client.model.v1.ContentType.Liveblog
+import com.gu.contentapi.client.model.v1.ContentType.{Liveblog, Article}
 import com.gu.contentapi.firehose.client.StreamListener
 import com.gu.crier.model.event.v1.RetrievableContent
 import play.api.libs.json._
@@ -13,9 +13,9 @@ class ConsumerLogicService @Inject() (playconfig: play.Configuration, ws: WSClie
 
   override def contentUpdate(content: Content): Unit = {
 
-    def handleLiveBlogUpdate(content: Content) {
+    def handleUpdate(content: Content) {
 
-      println("Content update for Article")
+      println("Content update for LiveBlog")
       println("  title: ", content.webTitle)
       println("  url: ", content.webUrl)
       println("  amp: ", content.webUrl.replaceFirst("www", "amp"))
@@ -40,7 +40,8 @@ class ConsumerLogicService @Inject() (playconfig: play.Configuration, ws: WSClie
     }
 
     content.`type` match {
-      case Liveblog => handleLiveBlogUpdate(content)
+      case Liveblog => handleUpdate(content)
+      case Article => handleUpdate(content)
       case _ => handleOther(content)
     }
 
