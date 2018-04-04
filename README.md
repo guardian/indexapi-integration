@@ -1,5 +1,10 @@
 # Google Indexing API Integration
 
+
+**This platform is no longer in use at the Guardian, this repo for reference only**
+
+### Summary
+
 This repo contains the lambda and app that powers the Google Push Index API.
 
 partner dash here:
